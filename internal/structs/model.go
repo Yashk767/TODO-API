@@ -11,6 +11,11 @@ type Todo struct {
 	Completed bool      `json:"completed"`
 }
 
+type CreateTodoRequest struct {
+	Text    string    `json:"text"`
+	DueDate time.Time `json:"due_date"`
+}
+
 type UpdateTodoRequest struct {
 	Text      *string    `json:"text"`
 	DueDate   *time.Time `json:"due_date"`
