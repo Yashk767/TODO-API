@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -23,13 +25,17 @@ func main() {
 	//setup router
 	router := server.NewRouter(handler)
 
-	server := &http.Server{
-		Addr:         ":8080",
+	httpServer := &http.Server{
+		Addr:         "localhost:8082",
 		Handler:      router,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  60 * time.Second,
 	}
 
-	server.ListenAndServe()
+	fmt.Println("server started on :", httpServer.Addr)
+
+	if err := httpServer.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
 }
