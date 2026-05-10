@@ -92,15 +92,20 @@ func (h *Handler) DeleteTodo(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetAllToDos(w http.ResponseWriter, r *http.Request) {
-	includeCompleted := r.PathValue("include_completed")
+	includeCompleted := false
 
-	includeCompletedBool, err := strconv.ParseBool(includeCompleted)
-	if err != nil {
-		writeJSONError(w, http.StatusInternalServerError, "failed to parse include_completed query")
-		return
+	includeCompletedValue := r.URL.Query().Get("include_completed")
+	if includeCompletedValue != "" {
+		parsedValue, err := strconv.ParseBool(includeCompletedValue)
+		if err != nil {
+			writeJSONError(w, http.StatusInternalServerError, "include_completed must be true or false")
+			return
+		}
+
+		includeCompleted = parsedValue
 	}
 
-	todos, err := h.service.List(includeCompletedBool)
+	todos, err := h.service.List(includeCompleted)
 	if err != nil {
 		writeJSONError(w, http.StatusInternalServerError, err.Error())
 		return
