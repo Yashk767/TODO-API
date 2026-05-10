@@ -51,6 +51,19 @@ func (s *Service) Update(id int64, updateReq structs.UpdateTodoRequest) (structs
 	if id <= 0 {
 		return structs.Todo{}, ErrInvalidId
 	}
+	if updateReq.Text != nil {
+		trimmedText := strings.TrimSpace(*updateReq.Text)
+
+		if trimmedText == "" {
+			return structs.Todo{}, ErrInvalidTodoText
+		}
+
+		updateReq.Text = &trimmedText
+	}
+
+	if updateReq.DueDate != nil && updateReq.DueDate.IsZero() {
+		return structs.Todo{}, ErrInvalidDueDate
+	}
 	return s.repository.Update(id, updateReq)
 }
 
