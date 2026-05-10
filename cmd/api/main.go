@@ -16,9 +16,9 @@ func main() {
 	service := service.NewService(repository)
 
 	//setup handler
-	handler := handler.NewHandler(service)
+	_ = handler.NewHandler(service)
 
 	//setup server
-	router := http.NewServeMux()
+	_ = http.NewServeMux()
 
 }
