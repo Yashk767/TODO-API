@@ -54,10 +54,6 @@ func (s *Service) Update(id int64, updateReq structs.UpdateTodoRequest) (structs
 	if updateReq.Text != nil {
 		trimmedText := strings.TrimSpace(*updateReq.Text)
 
-		if trimmedText == "" {
-			return structs.Todo{}, ErrInvalidTodoText
-		}
-
 		updateReq.Text = &trimmedText
 	}
 
