@@ -11,6 +11,7 @@ import (
 
 var ErrInvalidTodoText = errors.New("invalid todo text")
 var ErrInvalidDueDate = errors.New("invalid due date")
+var ErrDueDateInPast = errors.New("due date cannot be in the past")
 var ErrInvalidId = errors.New("invalid id")
 
 type Service struct {
@@ -35,7 +36,7 @@ func (s *Service) Create(createReq structs.CreateTodoRequest) (structs.Todo, err
 	}
 
 	if time.Now().UTC().After(createReq.DueDate) {
-		return structs.Todo{}, ErrInvalidDueDate
+		return structs.Todo{}, ErrDueDateInPast
 	}
 
 	return s.repository.Create(createReq)
@@ -51,8 +52,14 @@ func (s *Service) Update(id int64, updateReq structs.UpdateTodoRequest) (structs
 		updateReq.Text = &trimmedText
 	}
 
-	if updateReq.DueDate != nil && updateReq.DueDate.IsZero() {
-		return structs.Todo{}, ErrInvalidDueDate
+	if updateReq.DueDate != nil {
+		if updateReq.DueDate.IsZero() {
+			return structs.Todo{}, ErrInvalidDueDate
+		}
+
+		if time.Now().UTC().After(*updateReq.DueDate) {
+			return structs.Todo{}, ErrDueDateInPast
+		}
 	}
 	return s.repository.Update(id, updateReq)
 }
