@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
+	"github.com/Yashk767/core"
 	"github.com/Yashk767/internal/handler"
 	"github.com/Yashk767/internal/repository"
 	"github.com/Yashk767/internal/server"
@@ -31,11 +31,11 @@ func main() {
 	router := server.NewRouter(handler)
 
 	httpServer := &http.Server{
-		Addr:         "localhost:8082",
+		Addr:         core.ServerAddress,
 		Handler:      router,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		IdleTimeout:  60 * time.Second,
+		ReadTimeout:  core.ReadTimeout,
+		WriteTimeout: core.WriteTimeout,
+		IdleTimeout:  core.IdleTimeout,
 	}
 
 	fmt.Println("server started on :", httpServer.Addr)

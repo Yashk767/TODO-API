@@ -9,10 +9,12 @@ import (
 	"github.com/Yashk767/internal/structs"
 )
 
-var ErrInvalidTodoText = errors.New("invalid todo text")
-var ErrInvalidDueDate = errors.New("invalid due date")
-var ErrDueDateInPast = errors.New("due date cannot be in the past")
-var ErrInvalidId = errors.New("invalid id")
+var (
+	ErrInvalidTodoText = errors.New("invalid todo text")
+	ErrInvalidDueDate  = errors.New("invalid due date")
+	ErrDueDateInPast   = errors.New("due date cannot be in the past")
+	ErrInvalidId       = errors.New("invalid id")
+)
 
 type Service struct {
 	repository repository.Repository

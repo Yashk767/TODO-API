@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -33,6 +34,8 @@ func (h *Handler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("todo created successfully with id:", todoReq.Id)
+
 	writeJSON(w, http.StatusCreated, todoReq)
 }
 
@@ -56,6 +59,8 @@ func (h *Handler) UpdateTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("todo updated successfully with: ", updateTodoReq)
+
 	writeJSON(w, http.StatusOK, todoReq)
 }
 
@@ -72,6 +77,8 @@ func (h *Handler) GetToDo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("todo retrieved successfully with id:", id)
+
 	writeJSON(w, http.StatusOK, todoReq)
 }
 
@@ -87,6 +94,8 @@ func (h *Handler) DeleteTodo(w http.ResponseWriter, r *http.Request) {
 		writeJSONError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	fmt.Println("todo deleted successfully with id:", id)
 
 	writeJSON(w, http.StatusOK, map[string]string{"message": "todo deleted successfully"})
 }

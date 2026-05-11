@@ -7,23 +7,22 @@ import (
 	"path"
 	"time"
 
+	"github.com/Yashk767/core"
 	"github.com/Yashk767/internal/structs"
+
 	_ "modernc.org/sqlite"
 )
-
-const databaseDir = "database"
-const databaseFile = "todos.db"
 
 type SqliteRepository struct {
 	DB *sql.DB
 }
 
 func NewSqliteRepository() (*SqliteRepository, error) {
-	if err := os.MkdirAll(databaseDir, os.ModePerm); err != nil {
+	if err := os.MkdirAll(core.DatabaseDir, os.ModePerm); err != nil {
 		return nil, err
 	}
 
-	dbPath := path.Join(databaseDir, databaseFile)
+	dbPath := path.Join(core.DatabaseDir, core.DatabaseFile)
 
 	db, err := sql.Open("sqlite", dbPath)
 	if err != nil {
