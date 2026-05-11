@@ -59,7 +59,7 @@ func (h *Handler) UpdateTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("todo updated successfully with: ", updateTodoReq)
+	fmt.Println("todo updated successfully with: ", todoReq)
 
 	writeJSON(w, http.StatusOK, todoReq)
 }
