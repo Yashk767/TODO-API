@@ -25,18 +25,20 @@ func NewInMemoryRepository() *InMemoryRepository {
 	}
 }
 
-func (r *InMemoryRepository) Create(todo structs.Todo) (structs.Todo, error) {
+func (r *InMemoryRepository) Create(todo structs.CreateTodoRequest) (structs.Todo, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	var createdTodo structs.Todo
+	createdTodo.Text = todo.Text
+	createdTodo.DueDate = todo.DueDate
+	createdTodo.Id = r.nextId
+	createdTodo.CreatedAt = time.Now().UTC()
+	createdTodo.UpdatedAt = time.Now().UTC()
 
-	todo.Id = r.nextId
-	todo.CreatedAt = time.Now().UTC()
-	todo.UpdatedAt = time.Now().UTC()
-
-	r.todoList[todo.Id] = todo
+	r.todoList[createdTodo.Id] = createdTodo
 	r.nextId++
 
-	return todo, nil
+	return createdTodo, nil
 }
 
 func (r *InMemoryRepository) Update(id int64, updateTodo structs.UpdateTodoRequest) (structs.Todo, error) {

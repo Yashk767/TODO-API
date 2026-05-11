@@ -38,13 +38,7 @@ func (s *Service) Create(createReq structs.CreateTodoRequest) (structs.Todo, err
 		return structs.Todo{}, ErrInvalidDueDate
 	}
 
-	todo := structs.Todo{
-		Text:      createReq.Text,
-		DueDate:   createReq.DueDate,
-		Completed: false,
-	}
-
-	return s.repository.Create(todo)
+	return s.repository.Create(createReq)
 }
 
 func (s *Service) Update(id int64, updateReq structs.UpdateTodoRequest) (structs.Todo, error) {

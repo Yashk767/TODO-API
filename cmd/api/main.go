@@ -14,7 +14,12 @@ import (
 
 func main() {
 	//setup repository
-	repository := repository.NewInMemoryRepository()
+
+	//repository := repository.NewInMemoryRepository()
+	repository, err := repository.NewSqliteRepository()
+	if err != nil {
+		log.Fatal("Error setting up repository: ", err)
+	}
 
 	//setup service
 	service := service.NewService(repository)
