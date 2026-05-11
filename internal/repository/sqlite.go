@@ -81,7 +81,10 @@ func (r *SqliteRepository) Create(todo structs.CreateTodoRequest) (structs.Todo,
 }
 
 func (r *SqliteRepository) Update(id int64, todo structs.UpdateTodoRequest) (structs.Todo, error) {
-	var updatedTodo structs.Todo
+	updatedTodo, err := r.GetById(id)
+	if err != nil {
+		return structs.Todo{}, err
+	}
 
 	updatedTodo.Id = id
 	if todo.Text != nil {
@@ -102,19 +105,19 @@ func (r *SqliteRepository) Update(id int64, todo structs.UpdateTodoRequest) (str
 	`)
 
 	if err != nil {
-		return structs.Todo{}, nil
+		return structs.Todo{}, err
 	}
 
 	defer stmt.Close()
 
 	result, err := stmt.Exec(updatedTodo.Text, updatedTodo.DueDate, updatedTodo.Completed, updatedTodo.UpdatedAt, id)
 	if err != nil {
-		return structs.Todo{}, nil
+		return structs.Todo{}, err
 	}
 
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return structs.Todo{}, nil
+		return structs.Todo{}, err
 	}
 
 	if rowsAffected == 0 {
