@@ -150,7 +150,7 @@ func (r *SqliteRepository) Delete(id int64) error {
 
 func (r *SqliteRepository) GetById(id int64) (structs.Todo, error) {
 	var todo structs.Todo
-	stmt, err := r.DB.Prepare(`SELECT text, due_date, completed, created_at, updated_at
+	stmt, err := r.DB.Prepare(`SELECT id, text, due_date, completed, created_at, updated_at
 	FROM todos
 	WHERE id = ? LIMIT 1
 	`)
@@ -160,7 +160,7 @@ func (r *SqliteRepository) GetById(id int64) (structs.Todo, error) {
 
 	defer stmt.Close()
 
-	err = stmt.QueryRow(id).Scan(&todo.Text, &todo.DueDate, &todo.Completed, &todo.CreatedAt, &todo.UpdatedAt)
+	err = stmt.QueryRow(id).Scan(&todo.Id, &todo.Text, &todo.DueDate, &todo.Completed, &todo.CreatedAt, &todo.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return structs.Todo{}, ErrTodoNotFound
